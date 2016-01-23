@@ -32,7 +32,7 @@ MProcess Object
     Receive callback as parameter that is invoked when the child process is exited.
     + `fn(ret)` 
             `ret` could be an integer with 0 value, or an object containing `code` and `signal` if the child process not cleanly exited
-- `clone()` 
+- `clone()`     
     Create new `MProcess` object based on current instance of `MProcess`
 - `send(messsage)`  
     Send `message` to child process. Note that `send()` can only be used if `MProcess` instance is initiated using `MProcess.FORK` type. Return `Promise` and will `resolve` if child process successfully response, and `reject` if child process can't response in timely fashion. 
