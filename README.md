@@ -30,7 +30,7 @@ MProcess Object
     Kill the underlying process. Custom signal can ben passed to child process via `code`
 - `done(fn)`    
     Receive callback as parameter that is invoked when the child process is exited.
-    + `fn(ret)` 
+    + `fn(ret)`     
             `ret` could be an integer with 0 value, or an object containing `code` and `signal` if the child process not cleanly exited
 - `clone()`     
     Create new `MProcess` object based on current instance of `MProcess`
@@ -40,11 +40,11 @@ MProcess Object
     Return `ChildProcess` object of the current instance of `MProcess` or null if `run()` has not been called previously.
 - `onStdOutFinish(fn)`  
     Receive callback as parameter that is invoked when the child process finish streaming its standard output. Callback not fired if you supply `options` during instantiation with `{stdio : 'inherit'}`
-    + `fn(str)` 
+    + `fn(str)`     
             `str` contains the output string
 - `onStdOutError(fn)`   
     Receive callback as parameter that is invoked when the child process experience errors and writing to its std err. Callback not fired if you supply `options` during instantiation with `{stdio : 'inherit'}`
-    + `fn(str)` 
+    + `fn(str)`     
             `str` contains the error string
 
 ## How to use
