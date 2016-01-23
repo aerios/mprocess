@@ -14,11 +14,13 @@ NodeJS has great module that handle creating, manipulating, and destroying child
 ```javascript
 MProcess(command[,args,][, type][, options])
 ```
+
 #### Parameters
 - command   : The command to run
 - args      : Array of arguments for `command`. Default to empty array
 - type      : Type of runner. Currently support MProcess.FORK to invoke `fork` or MProcess.SPAWN to invoke `spawn`. Default to MProcess.SPAWN
 - options   : Object containing parameter that will control the behaviour of invoked process. Accept all parameter defined in https://nodejs.org/api/child_process.html. Default to `{}`
+
 #### Return
 MProcess Object
 
