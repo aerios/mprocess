@@ -26,25 +26,25 @@ MProcess Object
 
 - `run()`    
     After creating new MProcess, the process itself is not automatically created. To create the process, invoke `run()`
-- `kill([code])`  
+- `kill([code])`    
     Kill the underlying process. Custom signal can ben passed to child process via `code`
-- `done(fn)` 
+- `done(fn)`    
     Receive callback as parameter that is invoked when the child process is exited.
     + `fn(ret)` 
             `ret` could be an integer with 0 value, or an object containing `code` and `signal` if the child process not cleanly exited
-- `clone()`
+- `clone()` 
     Create new `MProcess` object based on current instance of `MProcess`
-- `send(messsage)`
+- `send(messsage)`  
     Send `message` to child process. Note that `send()` can only be used if `MProcess` instance is initiated using `MProcess.FORK` type. Return `Promise` and will `resolve` if child process successfully response, and `reject` if child process can't response in timely fashion. 
-- `getProcess()`
+- `getProcess()`    
     Return `ChildProcess` object of the current instance of `MProcess` or null if `run()` has not been called previously.
-- `onStdOutFinish(fn)`
+- `onStdOutFinish(fn)`  
     Receive callback as parameter that is invoked when the child process finish streaming its standard output. Callback not fired if you supply `options` during instantiation with `{stdio : 'inherit'}`
-    + `fn(str)`
+    + `fn(str)` 
             `str` contains the output string
-- `onStdOutError(fn)`
+- `onStdOutError(fn)`   
     Receive callback as parameter that is invoked when the child process experience errors and writing to its std err. Callback not fired if you supply `options` during instantiation with `{stdio : 'inherit'}`
-    + `fn(str)`
+    + `fn(str)` 
             `str` contains the error string
 
 ## How to use
