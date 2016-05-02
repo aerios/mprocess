@@ -1,6 +1,6 @@
 {
   "name": "mprocess",
-  "version": "1.4.3",
+  "version": "1.5.0",
   "description": "child_process simple wrapper using Promise",
   "main": "index.js",
   "scripts": {
