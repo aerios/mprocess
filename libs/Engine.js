@@ -65,34 +65,6 @@ function MyProcess(proc, args, type, stdOpt) {
 	} else {
 		this.options.stdOpt = this.options.stdOpt || {};
 	}
-	if(this._child.listeners("message").length == 0){
-		// console.log("Bind")
-		this._child.on("message",function(message){
-			// console.log(message)
-			var id = message.id;
-			var data =  message.data;
-			var isError = message.is_error
-			if(id){
-				var metaData = Mailbox[id];
-				clearTimeout(id);
-				var resolver = metaData.resolver;
-				var rejected = metaData.rejecter;
-				if(isError){
-					reject(new Error(
-						underscore.isString(data) ?
-						data : JSON.stringify(data)
-					))
-				}else{
-					resolver(data);
-				}
-				Mailbox[id] = null;
-			}else{
-				that._rawMessageEmitter.emit("message",message)
-			}
-		})
-	}
-
-
 }
 
 function run() {
@@ -150,6 +122,32 @@ function run() {
 	if (this._detachOnInit) {
 		child.unref();
 	}	
+	if(this._child.listeners("message").length == 0){
+		// console.log("Bind")
+		this._child.on("message",function(message){
+			// console.log(message)
+			var id = message.id;
+			var data =  message.data;
+			var isError = message.is_error
+			if(id){
+				var metaData = Mailbox[id];
+				clearTimeout(id);
+				var resolver = metaData.resolver;
+				var rejected = metaData.rejecter;
+				if(isError){
+					reject(new Error(
+						underscore.isString(data) ?
+						data : JSON.stringify(data)
+					))
+				}else{
+					resolver(data);
+				}
+				Mailbox[id] = null;
+			}else{
+				that._rawMessageEmitter.emit("message",message)
+			}
+		})
+	}
 	return pr;
 }
 
