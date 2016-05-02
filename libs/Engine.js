@@ -3,6 +3,7 @@ var Promise = require("when/es6-shim/Promise")
 var spawn = require('child_process').spawn;
 var fork = require('child_process').fork;
 var util = require('util');
+var EventEmitter = require("events").EventEmitter
 
 var alphabetList = "1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"
 var createRandomId = function(num) {
@@ -50,6 +51,8 @@ function setMessageDelivery(instance,messageId,resolver,rejecter,message){
 					resolver(data);
 				}
 				Mailbox[id] = null;
+			}else{
+				instance._rawMessageEmitter.emit("message",message)
 			}
 		})
 	}
@@ -59,6 +62,7 @@ function MyProcess(proc, args, type, stdOpt) {
 	var that = this;
 	this._doneStack = []
 	this._messageStack = {}
+	this._rawMessageEmitter = new EventEmitter
 
 	this.options = {}
 	this._child = null;
@@ -211,6 +215,10 @@ function onStdOutError(fn){
 	this._stdPr.catch(fn)
 }
 
+function onMessage(fn){
+	this._rawMessageEmitter.on("message",fn)
+}
+
 MyProcess.prototype.run = run;
 MyProcess.prototype.kill = kill;
 MyProcess.prototype.done = done;
@@ -219,6 +227,7 @@ MyProcess.prototype.send = send;
 MyProcess.prototype.getProcess = getProcess
 MyProcess.prototype.onStdOutFinish = onStdOutFinish
 MyProcess.prototype.onStdOutError = onStdOutError
+MyProcess.prototype.onMessage = onMessage
 
 MyProcess.SPAWN = "spawn";
 MyProcess.FORK = "fork";
