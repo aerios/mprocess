@@ -203,6 +203,14 @@ function send(data) {
 	return pr;
 }
 
+function tell(data){
+	if(this._child.send){
+		this._child.send(data)
+	}else{
+		throw new Error("send() method is not available")
+	}
+}
+
 function getProcess(){
 	return this._child;
 }
@@ -224,6 +232,8 @@ MyProcess.prototype.kill = kill;
 MyProcess.prototype.done = done;
 MyProcess.prototype.clone = clone;
 MyProcess.prototype.send = send;
+MyProcess.prototype.tell = tell
+MyProcess.prototype.ask = send;
 MyProcess.prototype.getProcess = getProcess
 MyProcess.prototype.onStdOutFinish = onStdOutFinish
 MyProcess.prototype.onStdOutError = onStdOutError
