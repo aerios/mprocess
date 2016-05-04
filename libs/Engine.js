@@ -24,7 +24,7 @@ function setMessageDelivery(instance,messageId,resolver,rejecter,message){
 	},5 * 1000 * 60)
 	Mailbox[messageId] = {
 		resolver:resolver,
-		rejected:rejecter,
+		rejecter:rejecter,
 		message:message,
 		timeout:tid,
 		id:messageId
@@ -131,11 +131,11 @@ function run() {
 			var isError = message.is_error
 			if(id){
 				var metaData = Mailbox[id];
-				clearTimeout(id);
+				clearTimeout(metaData.tid);
 				var resolver = metaData.resolver;
-				var rejected = metaData.rejecter;
+				var rejecter = metaData.rejecter;
 				if(isError){
-					reject(new Error(
+					rejecter(new Error(
 						underscore.isString(data) ?
 						data : JSON.stringify(data)
 					))
