@@ -131,7 +131,7 @@ function run() {
 			var isError = message.is_error
 			if(id){
 				var metaData = Mailbox[id];
-				clearTimeout(metaData.tid);
+				clearTimeout(metaData.timeout);
 				var resolver = metaData.resolver;
 				var rejecter = metaData.rejecter;
 				if(isError){
