@@ -102,13 +102,13 @@ function run() {
 	this._child = child;
 	var pr = new Promise(function(resolve, reject) {
 		child.on('exit', function(code, signal) {
-			if (code == 0) {
+			if (!code) {
 				resolve(code)
 			} else {
-				reject({
-					code: code,
-					signal: signal
-				})
+				var err = new Error("Process exited with code "+code+" and signal "+signal)
+				err.code = code;
+				err.signal = signal
+				reject(err)
 			}
 		})
 	});
