@@ -18,6 +18,7 @@ var createRandomId = function(num) {
 var Mailbox = {}
 
 function setMessageDelivery(instance,messageId,resolver,rejecter,message){	
+	// console.log(messageId)
 	var tid = setTimeout(function(){
 		Mailbox[messageId] = null;
 		rejecter(new Error("Process not receiving response from send() after 5 minutes : "+JSON.stringify(message)))
@@ -75,16 +76,14 @@ function run() {
 	var child;
 	var type = this.options.type;
 	var stdOpt = this.options.stdOpt;
+	var proc = this.options.proc;
+	var args = this.options.args
 	var stdBuffer = "";
 	var that = this;
 	//flush done stack
 	if (type == 'spawn') {
-		// console.log(stdOpt)
-		child = spawn(this.options.proc, this.options.args, stdOpt);
-		// console.log("Hai")
-		// console.log(child)
+		child = spawn(proc, args, stdOpt);
 		if(child.stdout){
-			// console.log("aa")		
 			child.stdout.on("data",function(str){				
 				stdBuffer += str.toString()
 			}).on("close",function(){
@@ -94,9 +93,9 @@ function run() {
 			})
 		}
 	} else if (type == 'fork') {
-		var path = this.options.args.shift();
+		var path = args.shift();
 		stdOpt.stdio = 'ignore';
-		child = fork(path, this.options.args, stdOpt);
+		child = fork(path, args, stdOpt);
 	}
 
 	this._child = child;
@@ -123,22 +122,24 @@ function run() {
 		child.unref();
 	}	
 	if(this._child.listeners("message").length == 0){
-		// console.log("Bind")
 		this._child.on("message",function(message){
-			// console.log(message)
 			var id = message.id;
 			var data =  message.data;
 			var isError = message.is_error
 			if(id){
+				// console.log(id,that)
 				var metaData = Mailbox[id];
 				clearTimeout(metaData.timeout);
 				var resolver = metaData.resolver;
 				var rejecter = metaData.rejecter;
 				if(isError){
-					rejecter(new Error(
-						underscore.isString(data) ?
-						data : JSON.stringify(data)
-					))
+					var err = new Error("Error on child worker")
+					if(underscore.isObject(data)){
+						underscore.extend(err,data)
+					}else{
+						err = new Error(data)
+					}
+					rejecter(err)
 				}else{
 					resolver(data);
 				}
