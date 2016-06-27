@@ -20,7 +20,7 @@ var Mailbox = {}
 function setMessageDelivery(instance,messageId,resolver,rejecter,message){	
 	// console.log(messageId)
 	var tid = setTimeout(function(){
-		Mailbox[messageId] = null;
+		
 		rejecter(new Error("Process not receiving response from send() after 5 minutes : "+JSON.stringify(message)))
 	},5 * 1000 * 60)
 	Mailbox[messageId] = {
