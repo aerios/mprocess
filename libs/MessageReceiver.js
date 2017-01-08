@@ -13,7 +13,7 @@ function MessageReceiver(){
 		var data = message.data
 		var processingResult = null
 		try {
-			if ( underscore.isArray(data) ) {
+			if ( !underscore.isArray(data) ) {
 				processingResult = that._receiveHandler.call(null,data)
 			} else {
 				processingResult = that._receiveHandler.apply(null,data)
