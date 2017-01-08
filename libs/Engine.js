@@ -4,6 +4,7 @@ var spawn = require('child_process').spawn;
 var fork = require('child_process').fork;
 var util = require('util');
 var EventEmitter = require("events").EventEmitter
+var MessageReceiver = require("./MessageReceiver")
 
 var alphabetList = "1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"
 var createRandomId = function(num) {
@@ -235,8 +236,12 @@ MyProcess.prototype.onStdOutFinish = onStdOutFinish
 MyProcess.prototype.onStdOutError = onStdOutError
 MyProcess.prototype.onMessage = onMessage
 
+
 MyProcess.SPAWN = "spawn";
 MyProcess.FORK = "fork";
 MyProcess.DETACH_MODE = 'detach_mode';
+MyProcess.getMessageReceiver = function(){
+	return new MessageReceiver()
+}
 
 module.exports = MyProcess;
